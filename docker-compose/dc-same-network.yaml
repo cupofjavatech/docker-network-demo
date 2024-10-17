@@ -1,0 +1,39 @@
+version: "3.7"
+
+services:
+
+  demo-samenetwork-container:
+    image: "cupofjavatech/docker-network-demo:v1"
+    container_name: demo-samenetwork-container
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://demo-samenetwork-mysql/demodb
+      SPRING_DATASOURCE_USERNAME: demouser
+      SPRING_DATASOURCE_PASSWORD: password
+    depends_on:
+      demo-samenetwork-mysql:
+        condition: service_healthy
+
+  demo-samenetwork-mysql:
+    container_name: 'demo-samenetwork-mysql'
+    image: 'mysql:latest'
+    environment:
+      - 'MYSQL_DATABASE=demodb'
+      - 'MYSQL_PASSWORD=password'
+      - 'MYSQL_ROOT_PASSWORD=password'
+      - 'MYSQL_USER=demouser'
+    ports:
+      - '3306:3306'
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u demouser --password=password
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 55
+
+
+networks:
+  default:
+    name: demo-network
+    external: false
