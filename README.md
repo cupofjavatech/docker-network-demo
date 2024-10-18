@@ -1,4 +1,5 @@
-#Docker Container Communication 
+Docker Container Communication
+----------------------------------------
 Demonstrate - How Container communicate with another container and host machine application. 
 
 This is a Spring Boot maven project connects to my-sql database. 
